@@ -6,6 +6,7 @@
 <title>MINH</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     font-family:Arial,sans-serif;
@@ -28,7 +29,7 @@ header{
 
 header h1{
     margin:0;
-    font-size:40px;
+    font-size:42px;
 }
 
 .container{
@@ -38,56 +39,22 @@ header h1{
     padding:20px;
 }
 
-#search{
-    width:100%;
-    padding:15px;
-    font-size:18px;
-    border:1px solid #ccc;
-    border-radius:10px;
-}
-
-#suggestions{
-    background:white;
-    border-radius:10px;
-    margin-top:5px;
-    overflow:hidden;
-}
-
-.suggestion{
-    padding:10px;
-    border-bottom:1px solid #ddd;
-    cursor:pointer;
-}
-
-.suggestion:hover{
-    background:#eee;
-}
-
 .word{
+    font-size:22px;
     padding:12px 0;
     border-bottom:1px solid #ddd;
-    font-size:20px;
 }
+
 </style>
 </head>
 
 <body>
 
-<header onclick="showHome()">
+<header onclick="location.reload()">
     <h1>MINH</h1>
 </header>
 
-<div class="container">
-
-<input
-type="text"
-id="search"
-placeholder="🔍 Tìm từ..."
-onkeyup="suggest()">
-
-<div id="suggestions"></div>
-
-<div id="content"></div>
+<div class="container" id="content">
 
 </div>
 
@@ -167,8 +134,6 @@ vi:"công cộng"
 
 ];
 
-function showHome(){
-
 let html="";
 
 words.forEach(w=>{
@@ -186,84 +151,6 @@ ${w.stt}. ${w.en} (${w.type}): ${w.vi}
 });
 
 document.getElementById("content").innerHTML=html;
-document.getElementById("suggestions").innerHTML="";
-}
-
-function suggest(){
-
-let text=
-document
-.getElementById("search")
-.value
-.toLowerCase();
-
-let box=
-document
-.getElementById("suggestions");
-
-box.innerHTML="";
-
-if(text===""){
-    showHome();
-    return;
-}
-
-words
-.filter(w=>
-w.en
-.toLowerCase()
-.includes(text))
-.slice(0,10)
-.forEach(w=>{
-
-box.innerHTML += `
-
-<div
-class="suggestion"
-onclick="searchWord('${w.en}')">
-
-${w.en}
-
-</div>
-
-`;
-
-});
-
-}
-
-function searchWord(word){
-
-let w=
-words.find(
-x=>x.en===word
-);
-
-if(w){
-
-document
-.getElementById("content")
-.innerHTML =
-
-`
-
-<div class="word">
-
-${w.stt}. ${w.en} (${w.type}): ${w.vi}
-
-</div>
-
-`;
-
-document
-.getElementById("suggestions")
-.innerHTML="";
-
-}
-
-}
-
-showHome();
 
 </script>
 
