@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINH</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f5f5f5;
+}
+
+header{
+    background:#1e40af;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+#suggestions{
+    background:white;
+    margin-bottom:20px;
+    border-radius:5px;
+}
+
+.suggestion{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    cursor:pointer;
+}
+
+.suggestion:hover{
+    background:#eee;
+}
+
+.menu{
+    margin:20px 0;
+}
+
+button{
+    padding:10px 20px;
+    font-size:18px;
+    margin-right:10px;
+    cursor:pointer;
+}
+
+.lesson{
+    background:white;
+    padding:15px;
+    margin:20px 0;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:left;
+}
+
+th{
+    background:#f0f0f0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MINH</h1>
+</header>
+
+<div class="container">
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Tìm từ..."
+        onkeyup="suggest()">
+
+    <div id="suggestions"></div>
+
+    <div class="menu">
+        <button onclick="showUnit('U2')">U2</button>
+    </div>
+
+    <div id="content">
+        <h2>Chào mừng đến với MINH</h2>
+        <p>Chọn Unit để xem từ vựng.</p>
+    </div>
+
+</div>
+
+<script>
+
+const data={
+
+U2:{
+
+"Lesson 1-2":[
+
+{stt:1,en:"transport",type:"n.",vi:"phương tiện"},
+{stt:2,en:"city",type:"n.",vi:"thành phố"},
+{stt:3,en:"traffic",type:"n.",vi:"giao thông"},
+{stt:4,en:"busy",type:"adj.",vi:"bận rộn"},
+{stt:5,en:"road",type:"n.",vi:"đường"}
+
+],
+
+"Lesson 3-4":[
+
+{stt:1,en:"tram",type:"n.",vi:"xe điện"},
+{stt:2,en:"update",type:"v.",vi:"cập nhật"},
+{stt:3,en:"metro",type:"n.",vi:"tàu điện"},
+{stt:4,en:"bike lane",type:"n.",vi:"làn xe đạp"},
+{stt:5,en:"public",type:"adj.",vi:"công cộng"}
+
+],
+
+"Lesson 5":[
+
+{stt:1,en:"annual",type:"adj.",vi:"hằng năm"},
+{stt:2,en:"attitude",type:"n.",vi:"thái độ"},
+{stt:3,en:"ban",type:"v.",vi:"cấm"},
+{stt:4,en:"biogas",type:"n.",vi:"khí sinh học"},
+{stt:5,en:"bookworm",type:"n.",vi:"mọt sách"},
+{stt:6,en:"cafeteria",type:"n.",vi:"quán cà phê"},
+{stt:7,en:"competition",type:"n.",vi:"cuộc thi"},
+{stt:8,en:"dessert",type:"n.",vi:"món tráng miệng"},
+{stt:9,en:"drop-off and pick-up times",type:"n.",vi:"thời gian đưa đón"},
+{stt:10,en:"food waste",type:"n.",vi:"đồ ăn bỏ đi"},
+{stt:11,en:"free sports facility",type:"n.",vi:"cơ sở thể thao miễn phí"},
+{stt:12,en:"hygiene",type:"n.",vi:"vệ sinh"},
+{stt:13,en:"learning space",type:"n.",vi:"không gian học tập"},
+{stt:14,en:"leftovers",type:"n.",vi:"thức ăn thừa"},
+{stt:15,en:"organise",type:"v.",vi:"tổ chức"},
+{stt:16,en:"partner",type:"n.",vi:"đối tác"},
+{stt:17,en:"realise",type:"v.",vi:"nhận ra"},
+{stt:18,en:"sort",type:"v.",vi:"phân loại"},
+{stt:19,en:"the City Teen Council",type:"n.",vi:"Hội đồng thanh thiếu niên thành phố"},
+{stt:20,en:"the waste-free city",type:"n.",vi:"thành phố không rác thải"},
+{stt:21,en:"vehicle",type:"n.",vi:"xe cộ"},
+{stt:22,en:"wide",type:"adj.",vi:"rộng"},
+{stt:23,en:"widen",type:"v.",vi:"mở rộng"}
+
+]
+
+}
+
+};
+
+function showUnit(unit){
+
+let html=`<h2>${unit}</h2>`;
+
+for(let lesson in data[unit]){
+
+html+=`
+<div class="lesson">
+
+<h3>${lesson}</h3>
+
+<table>
+
+<tr>
+<th>STT</th>
+<th>Từ</th>
+<th>Loại</th>
+<th>Nghĩa</th>
+</tr>
+`;
+
+data[unit][lesson].forEach(w=>{
+
+html+=`
+<tr>
+<td>${w.stt}</td>
+<td>${w.en}</td>
+<td>${w.type}</td>
+<td>${w.vi}</td>
+</tr>
+`;
+
+});
+
+html+=`</table></div>`;
+}
+
+document.getElementById("content").innerHTML=html;
+}
+
+function suggest(){
+
+let text=document
+.getElementById("search")
+.value.toLowerCase();
+
+let box=document
+.getElementById("suggestions");
+
+box.innerHTML="";
+
+if(text==="") return;
+
+let words=[];
+
+for(let u in data)
+for(let l in data[u])
+words=words.concat(data[u][l]);
+
+words
+.filter(w=>w.en.toLowerCase().includes(text))
+.slice(0,8)
+.forEach(w=>{
+
+box.innerHTML+=`
+<div class="suggestion"
+onclick="searchWord('${w.en}')">
+${w.en}
+</div>
+`;
+
+});
+}
+
+function searchWord(word){
+
+let words=[];
+
+for(let u in data)
+for(let l in data[u])
+words=words.concat(data[u][l]);
+
+let w=words.find(x=>x.en===word);
+
+if(w){
+
+document.getElementById("content").innerHTML=`
+
+<h2>Kết quả tìm kiếm</h2>
+
+<table>
+
+<tr>
+<th>STT</th>
+<th>Từ</th>
+<th>Loại</th>
+<th>Nghĩa</th>
+</tr>
+
+<tr>
+<td>${w.stt}</td>
+<td>${w.en}</td>
+<td>${w.type}</td>
+<td>${w.vi}</td>
+</tr>
+
+</table>
+`;
+
+document.getElementById("suggestions").innerHTML="";
+}
+}
+
+</script>
+
+</body>
+</html>
