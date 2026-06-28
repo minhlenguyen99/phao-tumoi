@@ -2,28 +2,25 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MINH</title>
 
 <style>
-
 *{
     box-sizing:border-box;
-    font-family:Arial;
+    font-family:Arial,sans-serif;
 }
 
 body{
     margin:0;
-    background:#f4f4f4;
+    background:#f5f5f5;
 }
-
-/* HEADER */
 
 header{
     background:#1e40af;
     color:white;
-    padding:20px;
     text-align:center;
+    padding:20px;
     cursor:pointer;
     position:sticky;
     top:0;
@@ -34,22 +31,18 @@ header h1{
     font-size:40px;
 }
 
-/* CONTAINER */
-
 .container{
     width:90%;
-    max-width:1000px;
+    max-width:900px;
     margin:auto;
     padding:20px;
 }
-
-/* SEARCH */
 
 #search{
     width:100%;
     padding:15px;
     font-size:18px;
-    border:none;
+    border:1px solid #ccc;
     border-radius:10px;
 }
 
@@ -61,7 +54,7 @@ header h1{
 }
 
 .suggestion{
-    padding:12px;
+    padding:10px;
     border-bottom:1px solid #ddd;
     cursor:pointer;
 }
@@ -70,45 +63,11 @@ header h1{
     background:#eee;
 }
 
-/* UNIT CARD */
-
-.unit{
-    background:white;
-    padding:20px;
-    margin:20px 0;
-    border-radius:10px;
-    cursor:pointer;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-    transition:.2s;
+.word{
+    padding:12px 0;
+    border-bottom:1px solid #ddd;
+    font-size:20px;
 }
-
-.unit:hover{
-    transform:translateY(-3px);
-}
-
-.lesson{
-    background:white;
-    padding:20px;
-    margin:20px 0;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,td{
-    border:1px solid #ddd;
-    padding:10px;
-}
-
-th{
-    background:#1e40af;
-    color:white;
-}
-
 </style>
 </head>
 
@@ -134,107 +93,100 @@ onkeyup="suggest()">
 
 <script>
 
-const data={
+const words=[
 
-U2:{
+{
+stt:1,
+en:"transport",
+type:"n.",
+vi:"phương tiện"
+},
 
-"Lesson 1-2":[
+{
+stt:2,
+en:"city",
+type:"n.",
+vi:"thành phố"
+},
 
-{stt:1,en:"transport",type:"n.",vi:"phương tiện"},
-{stt:2,en:"city",type:"n.",vi:"thành phố"},
-{stt:3,en:"traffic",type:"n.",vi:"giao thông"},
-{stt:4,en:"busy",type:"adj.",vi:"bận rộn"},
-{stt:5,en:"road",type:"n.",vi:"đường"}
+{
+stt:3,
+en:"traffic",
+type:"n.",
+vi:"giao thông"
+},
 
-],
+{
+stt:4,
+en:"busy",
+type:"adj.",
+vi:"bận rộn"
+},
 
-"Lesson 3-4":[
+{
+stt:5,
+en:"road",
+type:"n.",
+vi:"đường"
+},
 
-{stt:1,en:"tram",type:"n.",vi:"xe điện"},
-{stt:2,en:"update",type:"v.",vi:"cập nhật"},
-{stt:3,en:"metro",type:"n.",vi:"tàu điện"},
-{stt:4,en:"bike lane",type:"n.",vi:"làn xe đạp"},
-{stt:5,en:"public",type:"adj.",vi:"công cộng"}
+{
+stt:6,
+en:"tram",
+type:"n.",
+vi:"xe điện"
+},
 
-]
+{
+stt:7,
+en:"update",
+type:"v.",
+vi:"cập nhật"
+},
 
+{
+stt:8,
+en:"metro",
+type:"n.",
+vi:"tàu điện"
+},
+
+{
+stt:9,
+en:"bike lane",
+type:"n.",
+vi:"làn xe đạp"
+},
+
+{
+stt:10,
+en:"public",
+type:"adj.",
+vi:"công cộng"
 }
 
-};
+];
 
 function showHome(){
 
-document.getElementById("content").innerHTML=`
+let html="";
 
-<div class="unit"
-onclick="showUnit('U2')">
+words.forEach(w=>{
 
-<h2>UNIT 2</h2>
+html += `
 
-<p>
-10 từ • 2 lessons
-</p>
+<div class="word">
+
+${w.stt}. ${w.en} (${w.type}): ${w.vi}
 
 </div>
-
-`;
-
-document.getElementById("suggestions").innerHTML="";
-}
-
-function showUnit(unit){
-
-let html=`<h2>${unit}</h2>`;
-
-for(let lesson in data[unit]){
-
-html+=`
-
-<div class="lesson">
-
-<h3>${lesson}</h3>
-
-<table>
-
-<tr>
-<th>STT</th>
-<th>Từ</th>
-<th>Loại</th>
-<th>Nghĩa</th>
-</tr>
-
-`;
-
-data[unit][lesson].forEach(w=>{
-
-html+=`
-
-<tr>
-
-<td>${w.stt}</td>
-
-<td>${w.en}</td>
-
-<td>${w.type}</td>
-
-<td>${w.vi}</td>
-
-</tr>
 
 `;
 
 });
 
-html+=`
-
-</table>
-
-</div>
-
-`;
-}
-
 document.getElementById("content").innerHTML=html;
+document.getElementById("suggestions").innerHTML="";
 }
 
 function suggest(){
@@ -251,13 +203,10 @@ document
 
 box.innerHTML="";
 
-if(text==="") return;
-
-let words=[];
-
-for(let u in data)
-for(let l in data[u])
-words=words.concat(data[u][l]);
+if(text===""){
+    showHome();
+    return;
+}
 
 words
 .filter(w=>
@@ -267,13 +216,11 @@ w.en
 .slice(0,10)
 .forEach(w=>{
 
-box.innerHTML+=`
+box.innerHTML += `
 
 <div
 class="suggestion"
-onclick="
-searchWord('${w.en}')
-">
+onclick="searchWord('${w.en}')">
 
 ${w.en}
 
@@ -282,15 +229,10 @@ ${w.en}
 `;
 
 });
+
 }
 
 function searchWord(word){
-
-let words=[];
-
-for(let u in data)
-for(let l in data[u])
-words=words.concat(data[u][l]);
 
 let w=
 words.find(
@@ -301,45 +243,24 @@ if(w){
 
 document
 .getElementById("content")
-.innerHTML=
+.innerHTML =
 
 `
 
-<h2>
-Kết quả tìm kiếm
-</h2>
+<div class="word">
 
-<table>
+${w.stt}. ${w.en} (${w.type}): ${w.vi}
 
-<tr>
-<th>STT</th>
-<th>Từ</th>
-<th>Loại</th>
-<th>Nghĩa</th>
-</tr>
-
-<tr>
-
-<td>${w.stt}</td>
-
-<td>${w.en}</td>
-
-<td>${w.type}</td>
-
-<td>${w.vi}</td>
-
-</tr>
-
-</table>
+</div>
 
 `;
 
 document
-.getElementById(
-"suggestions"
-)
+.getElementById("suggestions")
 .innerHTML="";
+
 }
+
 }
 
 showHome();
